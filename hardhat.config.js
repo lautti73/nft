@@ -20,6 +20,22 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
  * @type import('hardhat/config').HardhatUserConfig
  */
 // eslint-disable-next-line import/no-anonymous-default-export
+
+
+let accountPrivateKey;
+ if (!process.env.PRIVATE_KEY) {
+   throw new Error("Please set your PRIVATE_KEY in a .env file");
+ } else {
+   accountPrivateKey = process.env.PRIVATE_KEY;
+ }
+ 
+ let infuraId;
+ if (!process.env.INFURA_ID) {
+   throw new Error("Please set your INFURA_ID in a .env file");
+ } else {
+  infuraId = process.env.INFURA_ID;
+ }
+
 module.exports =  {
   solidity: "0.8.4",
   networks: {
@@ -27,8 +43,8 @@ module.exports =  {
       chainId: 31337,
     },
     rinkeby: {
-      url: 'https://rinkeby.infura.io/v3/971744bb115946f59bb8767d2d6bea02',
-      accounts: ['4a775e9e34c3faad848e7d85bfab1492ef1f4e71459e8e06d2a734a9657fa842'],
+      url: `https://rinkeby.infura.io/v3/${infuraId}`,
+      accounts: [accountPrivateKey],
       chainId: 4,
     }
   },
