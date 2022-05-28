@@ -15,27 +15,24 @@ async function main() {
 
   // We get the contract to deploy
   const [deployer] = await hre.ethers.getSigners();
+
+  const NFTMarket = await hre.ethers.getContractFactory("NftMarketplace");
+  const nftmarket = await NFTMarket.deploy();
+
+  await nftmarket.deployed();
+  console.log("NFTMarket deployed to: ", nftmarket.address);
+
+  const subscriptionId = 0;
+  const mintFee = 0;
+  const nftMarketplaceAddress = nftmarket.address;
+  const powerTokenUris = 0;
+  
   const Powers = await hre.ethers.getContractFactory("Powers");
-  const powers = await Powers.deploy();
+  const powers = await Powers.deploy(subscriptionId, mintFee, nftMarketplaceAddress, powerTokenUris);
 
   await powers.deployed();
 
   console.log("PowersNFT deployed to:", powers.address);
-
-  const NFTMarket = await hre.ethers.getContractFactory("NFTMarket");
-  const nftmarket = await NFTMarket.deploy(powers.address);
-
-  await nftmarket.deployed();
-
-  console.log("NFTMarket deployed to: ", nftmarket.address);
-
-  console.log("deployer address is", deployer.address)
-
-  await powers.setVrfContractAddress(deployer.address)
-  console.log("VrfContract set to: ", await powers.vrfContractAddress() )
-
-  await powers.setMarketContractAddress(nftmarket.address);
-  console.log("market address set to: ", await powers.marketContractAddress());
 }
 
 // We recommend this pattern to be able to use async/await everywhere

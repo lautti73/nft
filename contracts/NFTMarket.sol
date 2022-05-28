@@ -75,6 +75,8 @@ contract NftMarketplace is ReentrancyGuard {
         _;
     }
 
+    constructor() {}
+
     function listItem(
         address nftAddress,
         uint256 tokenId,
