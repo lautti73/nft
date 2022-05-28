@@ -4,7 +4,7 @@
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
 const hre = require("hardhat");
-const {powersUri} = require("../public/powers/powersUri");
+const powersUri = require("../public/powers/powersUri");
 
 async function main() {
   // Hardhat always runs the compile task when running scripts with its command
@@ -24,7 +24,8 @@ async function main() {
   console.log("NFTMarket deployed to: ", nftmarket.address);
 
   const subscriptionId = 2052;
-  const mintFee = 0.03;
+  const mintFee = hre.ethers.utils.parseEther('0.03');
+  console.log(typeof mintFee, mintFee);
   const nftMarketplaceAddress = nftmarket.address;
   const powerTokenUris = powersUri;
 

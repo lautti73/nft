@@ -1,4 +1,4 @@
-export const powersUri = [
+module.exports = [
     [
         "QmeD7C9kGs9SfaGp3hYL4bd3JjWMLejBjZaTBe9H1LZ2Qz",
         "QmcJwUJ2oYQQAyVFcsmNH1wxK4heCoTCjNdQhFyt5swQJ2",

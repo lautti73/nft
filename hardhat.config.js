@@ -2,6 +2,7 @@ require("hardhat/config");
 require("@nomiclabs/hardhat-waffle");
 require("@nomiclabs/hardhat-ethers");
 require('hardhat-deploy');
+require('dotenv').config({ path: "./.env" });
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -37,7 +38,7 @@ let accountPrivateKey;
  }
 
 module.exports =  {
-  solidity: "0.8.4",
+  solidity: "0.8.8",
   networks: {
     hardhat: {
       chainId: 31337,
