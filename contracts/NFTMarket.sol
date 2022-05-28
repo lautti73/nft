@@ -1,82 +1,147 @@
-//SPDX-License-Identifier: Unlicense
-pragma solidity ^0.8.0;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.7;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract NFTMarket is ReentrancyGuard {
-    using Counters for Counters.Counter;
-    Counters.Counter private _itemIds;
-    Counters.Counter public itemsCounter;
+error PriceNotMet(address nftAddress, uint256 tokenId, uint256 price);
+error ItemNotForSale(address nftAddress, uint256 tokenId);
+error NotListed(address nftAddress, uint256 tokenId);
+error AlreadyListed(address nftAddress, uint256 tokenId);
+error NoProceeds();
+error NotOwner();
+error NotApprovedForMarketplace();
+error PriceMustBeAboveZero();
 
-    address nftContract;
-
-    struct MarketItem {
-        uint256 itemId;
-        uint256 tokenId;
+contract NftMarketplace is ReentrancyGuard {
+    struct Listing {
         uint256 price;
         address seller;
-        address owner;
-        bool sold;
     }
 
-    MarketItem[] public allMarketItems;
-    mapping(uint256 => MarketItem) public idToMarketItem;
-
-    event MarketItemCreated(
-        uint256 indexed itemId,
+    event ItemListed(
         address indexed seller,
-        uint256 indexed price
+        address indexed nftAddress,
+        uint256 indexed tokenId,
+        uint256 price
     );
 
-    event ItemSold(
-        uint256 indexed itemId,
-        address indexed newOwner,
-        address indexed oldOwner
+    event ItemCanceled(
+        address indexed seller,
+        address indexed nftAddress,
+        uint256 indexed tokenId
     );
 
-    constructor(address _nftContract) {
-        nftContract = _nftContract;
+    event ItemBought(
+        address indexed buyer,
+        address indexed nftAddress,
+        uint256 indexed tokenId,
+        uint256 price
+    );
+
+    mapping(address => mapping(uint256 => Listing)) private s_listings;
+    mapping(address => uint256) private s_proceeds;
+
+    modifier notListed(
+        address nftAddress,
+        uint256 tokenId,
+        address owner
+    ) {
+        Listing memory listing = s_listings[nftAddress][tokenId];
+        if (listing.price > 0) {
+            revert AlreadyListed(nftAddress, tokenId);
+        }
+        _;
     }
 
-    function listItem(uint256 _tokenId, uint256 _price) public nonReentrant {
-        require(msg.sender == IERC721(nftContract).ownerOf(_tokenId), "You are not the owner of the NFT");
-        _itemIds.increment();
-        itemsCounter.increment();
-        uint256 newItemId = _itemIds.current();
-        
-        idToMarketItem[newItemId] = MarketItem({
-            itemId: newItemId,
-            tokenId: _tokenId,
-            price: _price,
-            seller: msg.sender,
-            owner: address(0),
-            sold: false
-        });
-
-        allMarketItems.push(idToMarketItem[newItemId]);
-
-        emit MarketItemCreated(newItemId, msg.sender, _price);
-
-        IERC721(nftContract).transferFrom(idToMarketItem[newItemId].seller, address(this), _tokenId);
+    modifier isListed(address nftAddress, uint256 tokenId) {
+        Listing memory listing = s_listings[nftAddress][tokenId];
+        if (listing.price <= 0) {
+            revert NotListed(nftAddress, tokenId);
+        }
+        _;
     }
 
-    function buyItem(uint256 _itemId) public payable nonReentrant {
-        require(msg.value == idToMarketItem[_itemId].price, "Please send the solicited amount");
-        require(!idToMarketItem[_itemId].sold, "The item is already sold");
-        itemsCounter.decrement();
-
-        emit ItemSold(_itemId, msg.sender, idToMarketItem[_itemId].seller);
-
-        idToMarketItem[_itemId].seller = address(0);
-        idToMarketItem[_itemId].owner = msg.sender;
-        idToMarketItem[_itemId].sold = true;
-
-        IERC721(nftContract).transferFrom(address(this), msg.sender, idToMarketItem[_itemId].tokenId);
+    modifier isOwner(
+        address nftAddress,
+        uint256 tokenId,
+        address spender
+    ) {
+        IERC721 nft = IERC721(nftAddress);
+        address owner = nft.ownerOf(tokenId);
+        if (spender != owner) {
+            revert NotOwner();
+        }
+        _;
     }
 
-    function fetchListedItems() public view returns (MarketItem[] memory) {
-        return allMarketItems;
+    function listItem(
+        address nftAddress,
+        uint256 tokenId,
+        uint256 price
+    )
+        external
+        notListed(nftAddress, tokenId, msg.sender)
+        isOwner(nftAddress, tokenId, msg.sender)
+    {
+        if (price <= 0) {
+            revert PriceMustBeAboveZero();
+        }
+        IERC721 nft = IERC721(nftAddress);
+        if (nft.getApproved(tokenId) != address(this)) {
+            revert NotApprovedForMarketplace();
+        }
+        s_listings[nftAddress][tokenId] = Listing(price, msg.sender);
+        emit ItemListed(msg.sender, nftAddress, tokenId, price);
+    }
+
+    function cancelListing(address nftAddress, uint256 tokenId)
+        external
+        isOwner(nftAddress, tokenId, msg.sender)
+        isListed(nftAddress, tokenId)
+    {
+        delete (s_listings[nftAddress][tokenId]);
+        emit ItemCanceled(msg.sender, nftAddress, tokenId);
+    }
+
+    function buyItem(address nftAddress, uint256 tokenId)
+        external
+        payable
+        isListed(nftAddress, tokenId)
+        nonReentrant
+    {
+        Listing memory listedItem = s_listings[nftAddress][tokenId];
+        if (msg.value < listedItem.price) {
+            revert PriceNotMet(nftAddress, tokenId, listedItem.price);
+        }
+        uint256 amount = msg.value;
+        address seller = s_listings[nftAddress][tokenId].seller;
+        delete (s_listings[nftAddress][tokenId]);
+        (bool succes,) = seller.call{value: amount}("");
+        require(succes, "Transfer failed");
+        IERC721(nftAddress).safeTransferFrom(listedItem.seller, msg.sender, tokenId);
+        emit ItemBought(msg.sender, nftAddress, tokenId, listedItem.price);
+    }
+
+    function updateListing(
+        address nftAddress,
+        uint256 tokenId,
+        uint256 newPrice
+    )
+        external
+        isListed(nftAddress, tokenId)
+        nonReentrant
+        isOwner(nftAddress, tokenId, msg.sender)
+    {
+        s_listings[nftAddress][tokenId].price = newPrice;
+        emit ItemListed(msg.sender, nftAddress, tokenId, newPrice);
+    }
+
+    function getListing(address nftAddress, uint256 tokenId)
+        external
+        view
+        returns (Listing memory)
+    {
+        return s_listings[nftAddress][tokenId];
     }
 }
