@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@chainlink/contracts": "^0.4.0",
+    "@heroicons/react": "^1.0.6",
     "@metamask/detect-provider": "^1.2.0",
     "@openzeppelin/contracts": "^4.5.0",
     "axios": "^0.26.1",
@@ -19,7 +20,8 @@
     "next": "12.1.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "sha3": "^2.1.4"
+    "sha3": "^2.1.4",
+    "wagmi": "^0.2.26"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers@^0.3.0-beta.13",
