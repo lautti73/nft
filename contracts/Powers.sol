@@ -40,8 +40,8 @@ contract Powers is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
     uint256 private i_mintFee;
     uint256 public s_tokenCounter;
 	mapping(uint256 => uint256) public tokenIdToPowerAmount;
-    uint256 internal constant MAX_CHANCE_VALUE = 100;
-	uint256 internal constant ELEMENT_CHANCE = 25;
+    uint256 internal constant MAX_CHANCE_VALUE = 1000;
+	uint256 internal constant ELEMENT_CHANCE = 250;
     string[3][4] internal s_powerTokenUris;
     bool private s_initialized;
 
@@ -86,7 +86,7 @@ contract Powers is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
         uint256 newItemId = s_tokenCounter;
         s_tokenCounter = s_tokenCounter + 1;
         uint256 moddedRng1 = randomWords[0] % MAX_CHANCE_VALUE;
-		uint256 moddedRng2 = randomWords[1] % (MAX_CHANCE_VALUE * 10); // 000 - 999
+		uint256 moddedRng2 = randomWords[1] % MAX_CHANCE_VALUE; // 000 - 999
 		uint256 additionalPower = randomWords[1] % 10;
         Element powerElement = getElementFromModdedRng(moddedRng1);
 		Tier powerTier = getTierFromModdedRng(moddedRng2);
@@ -99,7 +99,7 @@ contract Powers is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
     }
 
     function getChanceArray() public pure returns (uint256[3] memory) {
-        return [10, 30, MAX_CHANCE_VALUE];
+        return [100, 300, MAX_CHANCE_VALUE];
     }
 
 	function getBasePowerByTierArray(uint256 index) public pure returns (uint256) {
