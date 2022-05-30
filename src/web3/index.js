@@ -1,8 +1,8 @@
 import { ethers } from 'ethers';
 import { INFURA_ID } from '../../.env';
 
-export const NftMarketplaceAddress = '0xe96ee7109a989b9f8c5ef1da6795a9f1cb5f7a8c';
-export const powersNftAddress = '0x2daa299e1f5de880e16ac89a8454f33172e78619';
+export const NftMarketplaceAddress = '0x08bf580a748273a3c23B715359eafC76eF55d3CF';
+export const powersNftAddress = '0xC43d3AdEd547d87AE6e3454312dBc9D641e27927';
 
 export default (() => {
     const projectId = INFURA_ID;
