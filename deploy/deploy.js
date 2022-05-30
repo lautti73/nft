@@ -23,8 +23,8 @@ async function main() {
   await nftmarket.deployed();
   console.log("NFTMarket deployed to: ", nftmarket.address);
 
-  const subscriptionId = 2052;
-  const mintFee = hre.ethers.utils.parseEther('0.03');
+  const subscriptionId = 431;
+  const mintFee = hre.ethers.utils.parseEther('0.0001');
   console.log(typeof mintFee, mintFee);
   const nftMarketplaceAddress = nftmarket.address;
   const powerTokenUris = powersUri;
