@@ -47,12 +47,19 @@ const MyNfts = () => {
             }
         }
     }
-
+    
     return (
         <>
             <Navbar />
-            <main>
-                <div className='flex sm:container mx-auto'>
+            
+            <main className='py-8'>
+                <div className='flex flex-wrap sm:container mx-auto'>
+                    {
+                        !signer && <p className='text-center font-semibold'>Please login to see your NFTs</p>
+                    }
+                    {
+                        (myNfts.length == 0 && signer) && <p className='text-center font-semibold'>There is not NFTs to show</p>
+                    }
                     {
                         myNfts?.map( tokenId => 
                             <TokenContainer

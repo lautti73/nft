@@ -36,7 +36,6 @@ contract Powers is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
     uint32 private constant NUM_WORDS = 2;
 
     // NFT Variables
-	address private immutable i_nftMarketplaceAddress;
     uint256 private i_mintFee;
     uint256 public s_tokenCounter;
 	mapping(uint256 => uint256) public tokenIdToPowerAmount;
@@ -61,7 +60,6 @@ contract Powers is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
 		i_vrfCoordinator = VRFCoordinatorV2Interface(i_vrfCoordinatorV2);
         i_subscriptionId = subscriptionId;
         i_mintFee = mintFee;
-		i_nftMarketplaceAddress = nftMarketplaceAddress;
         _initializeContract(powerTokenUris);
     }
 
@@ -94,7 +92,6 @@ contract Powers is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
 
         _safeMint(powerOwner, newItemId);
         _setTokenURI(newItemId, s_powerTokenUris[uint256(powerElement)][uint256(powerTier)]);
-		setApprovalForAll(i_nftMarketplaceAddress, true);
         emit NftMinted(powerOwner);
     }
 
