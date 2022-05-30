@@ -9,7 +9,7 @@ export default (() => {
     let provider;
     if (typeof window === "undefined" || typeof window.ethereum === "undefined") {
     // We are on the server *OR* the user is not running metamask 
-    provider = new ethers.providers.InfuraProvider('rinkeby', projectId)
+    provider = new ethers.providers.InfuraProvider('maticmum', projectId)
     }
     return provider
 }) ()

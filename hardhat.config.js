@@ -47,6 +47,10 @@ module.exports =  {
       url: `https://rinkeby.infura.io/v3/${infuraId}`,
       accounts: [accountPrivateKey],
       chainId: 4,
+    },
+    matic: {
+      url: `https://polygon-mumbai.infura.io/v3/${infuraId}`,
+      accounts: [accountPrivateKey]
     }
   },
   paths: {
