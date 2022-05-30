@@ -11,12 +11,10 @@ const Connect = () => {
     const [{data: account}] = useAccount();
     const [,, {setLogin}] = useContext(StoreContext)
 
-    useEffect(() => {
-        if (account) {
-            setLogin(true)
-        }
-    }, [account])
-    
+    const handleConnect = (connector) => {
+        connect(connector);
+        setLogin(true)
+    }
         return (
             <>
                 <ModalConnect>
@@ -27,8 +25,7 @@ const Connect = () => {
                                 className='flex justify-center p-10 mb-8 lg:mx-20 border rounded shadow-md border-slate-300 text-xl text-center font-semibold hover:bg-gray-200 active:brightness-95 cursor-pointer'
                                 key={connector.id}
                                 onClick={() => {
-                                    connect(connector)
-                                    // setOpenMenu(false)
+                                    handleConnect(connector)
                                 }}
                                 disabled={!connector.ready}>
                                 { connector.name == 'WalletConnect' && <div className='flex items-center'><Image src={walletConnect} width={50} height={50}/></div>}
