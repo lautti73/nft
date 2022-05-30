@@ -18,5 +18,5 @@ module.exports = [
         "Qmc4tCQepkJPXWnY4aqMXW2XDyUBHsXyUZyqfUm39g2gpg",
         "QmRzTQMVoG1rW9bcjcP6ubbGtE7ewtQjFRhL47g7GeTavg",
         "Qma5HvLDWUsR4VcxkY3Qum2jAwKwQid9m8RDkg8miMyXT1"
-    ],
+    ]
 ]

@@ -31,7 +31,7 @@ contract Powers is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
     VRFCoordinatorV2Interface private immutable i_vrfCoordinator;
     uint64 private immutable i_subscriptionId;
     bytes32 private immutable i_gasLane = 0x4b09e658ed251bcafeebbc69400383d49f344ace09b9576fe248bb02c003fe9f;
-    uint32 private immutable i_callbackGasLimit = 1000000;
+    uint32 private immutable i_callbackGasLimit = 2000000;
     uint16 private constant REQUEST_CONFIRMATIONS = 3;
     uint32 private constant NUM_WORDS = 2;
 
@@ -39,7 +39,7 @@ contract Powers is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
 	address private immutable i_nftMarketplaceAddress;
     uint256 private i_mintFee;
     uint256 public s_tokenCounter;
-	mapping(uint256 => uint256) tokenIdToPowerAmount;
+	mapping(uint256 => uint256) public tokenIdToPowerAmount;
     uint256 internal constant MAX_CHANCE_VALUE = 100;
 	uint256 internal constant ELEMENT_CHANCE = 25;
     string[3][4] internal s_powerTokenUris;
