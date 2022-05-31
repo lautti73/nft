@@ -17,17 +17,17 @@ export const Navbar = () => {
     const [incorrectChain, setIncorrectChain] = useState(false);
     const [chainId, setChainId] = useState(0)
 
-    useEffect(() => {
-        if(logged) {
-            if(chainId != 80001) {
-                setIncorrectChain(true)
-            }  
-        }
-    }, [logged, chainId])
+    // useEffect(() => {
+    //     if(logged) {
+    //         if(chainId != 80001) {
+    //             setIncorrectChain(true)
+    //         }  
+    //     }
+    // }, [logged, chainId])
     
-    useEffect(()=> {
-        window.ethereum.on('connect', (chainIdInfo) => setChainId(parseInt(chainIdInfo.chainId, 16)));
-    }, [])
+    // useEffect(()=> {
+    //     window.ethereum.on('connect', (chainIdInfo) => setChainId(parseInt(chainIdInfo.chainId, 16)));
+    // }, [])
 
     return (
         <nav className='h-16 border-b border-neutral-200 border-solid shadow bg-blackbg'>
@@ -86,10 +86,10 @@ export const Navbar = () => {
                         </ul>
                     </ModalMenu>
                 }
-                {
+                {/* {
                     incorrectChain &&
                     <ModalChain />
-                }
+                } */}
             </ul>
         </nav>
     )
