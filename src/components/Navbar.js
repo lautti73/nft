@@ -18,7 +18,6 @@ export const Navbar = () => {
     const [chainId, setChainId] = useState(0)
 
     useEffect(() => {
-        ethereum.on('connect', (chainIdInfo) => setChainId(parseInt(chainIdInfo.chainId, 16)));
         if(logged) {
             if(chainId != 80001) {
                 setIncorrectChain(true)
@@ -26,6 +25,9 @@ export const Navbar = () => {
         }
     }, [logged, chainId])
     
+    useEffect(()=> {
+        ethereum.on('connect', (chainIdInfo) => setChainId(parseInt(chainIdInfo.chainId, 16)));
+    }, [])
 
     return (
         <nav className='h-16 border-b border-neutral-200 border-solid shadow bg-blackbg'>
@@ -68,7 +70,7 @@ export const Navbar = () => {
                                 </Link>
                             </li>
                             <li className={`mb-14 hover:text-amber-400 ${router.pathname == "/mint" && "active"}`}>
-                                <Link href={'/how-to-play'}>
+                                <Link href={'/mint'}>
                                     <a className='lg:pb-5 pb-1 sm:px-2 px-0.5'>Mint NFT</a>
                                 </Link>
                             </li>
