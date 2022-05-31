@@ -46,6 +46,3 @@ typechain
 #Hardhat files
 cache
 artifacts
-
-#.env.js
-.env.js
