@@ -79,6 +79,7 @@ export const TokenContainerMyNfts = ({tokenId}) => {
         if( account ) {
             try {
                 setLoadingGamble(true)
+                setOpenSellModal(false);
                 const price = ethers.utils.parseEther(sellPrice.toString())
                 const tx = await marketInstance.listItem(powersNftAddress, tokenId, price)
                 const transaction = await tx.wait()
@@ -89,7 +90,6 @@ export const TokenContainerMyNfts = ({tokenId}) => {
                     errorMessage: ''
                 })
                 setIsListed(true);
-                setOpenSellModal(false);
                 setSellPrice(0);
             } catch (err) {
                 console.log(err)
@@ -115,6 +115,7 @@ export const TokenContainerMyNfts = ({tokenId}) => {
         }
         if( account ) {
             try {
+                setOpenSellModal(false);
                 setLoadingGamble(true)
                 const tx = await powerInstance.approve(NftMarketplaceAddress, tokenId)
                 const transaction = await tx.wait()
@@ -125,7 +126,6 @@ export const TokenContainerMyNfts = ({tokenId}) => {
                     errorMessage: ''
                 })
                 setTokensApproved(true)
-                setOpenSellModal(false);
                 // router.replace(`/my-nfts`)
             } catch (err) {
                 console.log(err)
@@ -176,6 +176,7 @@ export const TokenContainerMyNfts = ({tokenId}) => {
         }
         if( account ) {
             try {
+                setOpenSellModal(false);
                 setLoadingGamble(true)
                 const newPrice = ethers.utils.parseEther(sellPrice.toString())
                 const tx = await marketInstance.updateListing(powersNftAddress, tokenId, newPrice)
@@ -186,7 +187,6 @@ export const TokenContainerMyNfts = ({tokenId}) => {
                     status: 200,
                     errorMessage: ''
                 })
-                setOpenSellModal(false);
             } catch (err) {
                 console.log(err)
                 setTransactionStatus({

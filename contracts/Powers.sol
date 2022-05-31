@@ -49,7 +49,7 @@ contract Powers is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
 
     // Events
     event NftRequested(uint256 indexed requestId, address requester);
-    event NftMinted(address minter);
+    event NftMinted(address indexed minter);
 
     constructor(
         uint64 subscriptionId,
