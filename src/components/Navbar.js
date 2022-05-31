@@ -18,7 +18,7 @@ export const Navbar = () => {
         <nav className='h-16 border-b border-neutral-200 border-solid shadow bg-blackbg'>
             <ul className='flex items-center h-full sm:container sm:mx-auto mx-5  text-whitefont'>
             
-                <li className='lg:mr-16 font-extrabold text-2xl'>GamblEarn</li>
+                <li className='lg:mr-16 font-bold text-2xl'>Powers</li>
                 <li className={`mr-12 hidden lg:list-item hover:text-amber-400 ${router.pathname == "/" && "active"}`}>
                     <Link href={'/'}>
                         <a className='lg:pb-5 pb-1 sm:px-2 px-0.5'>Marketplace</a>

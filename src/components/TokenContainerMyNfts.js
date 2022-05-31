@@ -13,7 +13,7 @@ import { ethers} from 'ethers';
 import { useRouter } from 'next/router';
 
 
-export const TokenContainer = ({tokenId}) => {
+export const TokenContainerMyNfts = ({tokenId}) => {
     const router = useRouter();
     const [meta, setMeta] = useState({});
     const [strength, setStrength] = useState(0)

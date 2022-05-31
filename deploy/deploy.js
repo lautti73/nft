@@ -26,11 +26,10 @@ async function main() {
   const subscriptionId = 431;
   const mintFee = hre.ethers.utils.parseEther('0.0001');
   console.log(typeof mintFee, mintFee);
-  const nftMarketplaceAddress = nftmarket.address;
   const powerTokenUris = powersUri;
 
   const Powers = await hre.ethers.getContractFactory("Powers");
-  const powers = await Powers.deploy(subscriptionId, mintFee, nftMarketplaceAddress, powerTokenUris);
+  const powers = await Powers.deploy(subscriptionId, mintFee, powerTokenUris);
 
   await powers.deployed();
 

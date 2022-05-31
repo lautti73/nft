@@ -7,7 +7,7 @@ import powersabi from '../artifacts/contracts/Powers.sol/Powers.json'
 import { StoreContext } from '../store/storeProvider'
 import { ethers } from 'ethers'
 import { ModalLoading } from '../components/ModalLoading'
-import { TokenContainer } from '../components/TokenContainer';
+import { TokenContainerMyNfts } from '../components/TokenContainerMyNfts';
 
 const MyNfts = () => {
     // const [totalNfts, setTotalNfts] = useState(0);
@@ -62,7 +62,7 @@ const MyNfts = () => {
                     }
                     {
                         myNfts?.map( tokenId => 
-                            <TokenContainer
+                            <TokenContainerMyNfts
                                 key={tokenId}
                                 tokenId={tokenId}
                             /> 

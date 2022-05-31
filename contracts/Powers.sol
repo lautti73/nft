@@ -54,7 +54,6 @@ contract Powers is ERC721URIStorage, VRFConsumerBaseV2, Ownable {
     constructor(
         uint64 subscriptionId,
         uint256 mintFee,
-		address nftMarketplaceAddress,
         string[3][4] memory powerTokenUris
     ) VRFConsumerBaseV2(i_vrfCoordinatorV2) ERC721("Power", "PWR") {
 		i_vrfCoordinator = VRFCoordinatorV2Interface(i_vrfCoordinatorV2);
