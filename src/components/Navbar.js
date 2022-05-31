@@ -24,7 +24,7 @@ export const Navbar = () => {
                 setIncorrectChain(true)
             }  
         }
-    }, [logged])
+    }, [logged, chainId])
     
 
     return (
