@@ -6,6 +6,7 @@ import powersabi from '../artifacts/contracts/Powers.sol/Powers.json'
 import marketabi from '../artifacts/contracts/NFTMarket.sol/NftMarketplace.json'
 import provider, {powersNftAddress, NftMarketplaceAddress} from '../web3'
 import {TokenContainerMarket} from '../components/TokenContainerMarket'
+import Head from 'next/head';
 
 
 
@@ -13,6 +14,11 @@ const Home = ({nftsData}) => {
     
     return(
         <>
+            <Head>
+                <title>Marketplace</title>
+                <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+                <link rel="shortcut icon" href="/superpower.png" />
+            </Head>
             <Navbar />
             <main className='py-8'>
                 <div className='flex flex-wrap sm:container mx-auto'>

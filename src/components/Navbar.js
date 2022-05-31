@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -7,12 +7,25 @@ import discordWhite from '../../public/discord-white.svg';
 import discordBlack from '../../public/discord-black.svg';
 import { Login } from './Login';
 import { StoreContext } from '../store/storeProvider';
+import {ModalChain} from '../components/ModalChain'
 
 export const Navbar = () => {
     
     const [openMenu, setOpenMenu] = useState(false);
     const router = useRouter();
     const [{logged}] = useContext(StoreContext);
+    const [incorrectChain, setIncorrectChain] = useState(false);
+    const [chainId, setChainId] = useState(0)
+
+    useEffect(() => {
+        ethereum.on('connect', (chainIdInfo) => setChainId(parseInt(chainIdInfo.chainId, 16)));
+        if(logged) {
+            if(chainId != 80001) {
+                setIncorrectChain(true)
+            }  
+        }
+    }, [logged])
+    
 
     return (
         <nav className='h-16 border-b border-neutral-200 border-solid shadow bg-blackbg'>
@@ -70,6 +83,10 @@ export const Navbar = () => {
                             <Login/>
                         </ul>
                     </ModalMenu>
+                }
+                {
+                    incorrectChain &&
+                    <ModalChain />
                 }
             </ul>
         </nav>

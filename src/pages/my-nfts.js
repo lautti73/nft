@@ -8,6 +8,7 @@ import { StoreContext } from '../store/storeProvider'
 import { ethers } from 'ethers'
 import { ModalLoading } from '../components/ModalLoading'
 import { TokenContainerMyNfts } from '../components/TokenContainerMyNfts';
+import Head from 'next/head';
 
 const MyNfts = () => {
     // const [totalNfts, setTotalNfts] = useState(0);
@@ -50,6 +51,11 @@ const MyNfts = () => {
     
     return (
         <>
+            <Head>
+                <title>My NFTs</title>
+                <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+                <link rel="shortcut icon" href="/superpower.png" />
+            </Head>
             <Navbar />
             
             <main className='py-8'>
