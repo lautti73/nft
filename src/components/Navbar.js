@@ -26,7 +26,7 @@ export const Navbar = () => {
     }, [logged, chainId])
     
     useEffect(()=> {
-        ethereum.on('connect', (chainIdInfo) => setChainId(parseInt(chainIdInfo.chainId, 16)));
+        window.ethereum.on('connect', (chainIdInfo) => setChainId(parseInt(chainIdInfo.chainId, 16)));
     }, [])
 
     return (
